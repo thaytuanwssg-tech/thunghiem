@@ -1,7 +1,7 @@
 import express from "express";
 import fetch from "node-fetch";
 import cors from "cors";
-
+console.log("API KEY:", process.env.OPENAI_API_KEY)
 const app = express();
 
 app.use(cors());
