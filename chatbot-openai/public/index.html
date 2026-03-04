@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Chatbot AI</title>
+<style>
+body { font-family: Arial; background:#f4f6f9; }
+#chat { width:600px; margin:40px auto; background:white; padding:20px; border-radius:10px; }
+.message { margin:10px 0; }
+.user { color:blue; }
+.bot { color:green; }
+</style>
+</head>
+<body>
+
+<div id="chat">
+  <h2>Chatbot AI</h2>
+  <div id="messages"></div>
+  <input type="text" id="input" placeholder="Nhập câu hỏi..." style="width:80%">
+  <button onclick="sendMessage()">Gửi</button>
+</div>
+
+<script>
+async function sendMessage() {
+  const input = document.getElementById("input");
+  const message = input.value;
+  if (!message) return;
+
+  const messagesDiv = document.getElementById("messages");
+  messagesDiv.innerHTML += `<div class="message user">Bạn: ${message}</div>`;
+
+  input.value = "";
+
+  const response = await fetch("/chat", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ message })
+  });
+
+  const data = await response.json();
+
+  messagesDiv.innerHTML += `<div class="message bot">AI: ${data.reply}</div>`;
+}
+</script>
+
+</body>
+</html>
