@@ -30,7 +30,7 @@ app.post("/chat", async (req, res) => {
     }
 
     const data = await response.json();
-
+console.log("OpenAI RAW:", JSON.stringify(data, null, 2));
     const reply =
       data.output?.[0]?.content?.[0]?.text ||
       data.output_text ||
