@@ -6,7 +6,7 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
-app.use(express.static("public")); // phục vụ index.html
+app.use(express.static("public"));
 
 app.post("/chat", async (req, res) => {
   try {
@@ -24,19 +24,26 @@ app.post("/chat", async (req, res) => {
       })
     });
 
+    // 🔥 Bắt lỗi API
+    if (!response.ok) {
+      const errorText = await response.text();
+      return res.status(response.status).json({ error: errorText });
+    }
+
     const data = await response.json();
 
-   const reply =
-  data.output?.[0]?.content?.[0]?.text ||
-  data.output_text ||
-  "Không có phản hồi từ AI";
-res.json({ reply });
+    const reply =
+      data.output?.[0]?.content?.[0]?.text ||
+      data.output_text ||
+      "Không có phản hồi từ AI";
+
+    res.json({ reply });
 
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 });
 
-app.listen(3000, () => {
-  console.log("Server running on port 3000");
+app.listen(process.env.PORT || 3000, () => {
+  console.log("Server running...");
 });
