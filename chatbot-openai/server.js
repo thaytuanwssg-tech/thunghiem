@@ -26,9 +26,11 @@ app.post("/chat", async (req, res) => {
 
     const data = await response.json();
 
-    res.json({
-      reply: data.output[0].content[0].text
-    });
+   const reply =
+  data.output?.[0]?.content?.[0]?.text ||
+  data.output_text ||
+  "Không có phản hồi từ AI";
+res.json({ reply });
 
   } catch (error) {
     res.status(500).json({ error: error.message });
