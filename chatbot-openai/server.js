@@ -1,54 +1,15 @@
-import express from "express";
-import fetch from "node-fetch";
-import cors from "cors";
+const data = await response.json();
 
-const app = express();
+console.log(data); // xem lỗi trong log
 
-app.use(cors());
-app.use(express.json());
-app.use(express.static("public"));
+if(data.error){
+  return res.json({
+    reply: "Lỗi: " + data.error.message
+  });
+}
 
-app.post("/chat", async (req, res) => {
+const reply = data.choices[0].message.content;
 
-  try {
-
-    const userMessage = req.body.message;
-
-    const response = await fetch("https://api.openai.com/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": "Bearer " + process.env.OPENAI_API_KEY
-      },
-      body: JSON.stringify({
-        model: "gpt-4o-mini",
-        messages: [
-          { role: "system", content: "Bạn là chatbot AI hỗ trợ giáo viên." },
-          { role: "user", content: userMessage }
-        ]
-      })
-    });
-
-    const data = await response.json();
-
-    const reply = data.choices[0].message.content;
-
-    res.json({
-      reply: reply
-    });
-
-  } catch (error) {
-
-    res.json({
-      reply: "Lỗi kết nối AI"
-    });
-
-  }
-
-});
-
-const PORT = process.env.PORT || 3000;
-
-app.listen(PORT, () => {
-  console.log("Server running on port " + PORT);
+res.json({
+  reply: reply
 });
