@@ -1,46 +1,43 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html>
 <head>
 <meta charset="UTF-8">
 <title>Chatbot AI</title>
-<style>
-body { font-family: Arial; background:#f4f6f9; }
-#chat { width:600px; margin:40px auto; background:white; padding:20px; border-radius:10px; }
-.message { margin:10px 0; }
-.user { color:blue; }
-.bot { color:green; }
-</style>
 </head>
+
 <body>
 
-<div id="chat">
-  <h2>Chatbot AI</h2>
-  <div id="messages"></div>
-  <input type="text" id="input" placeholder="Nhập câu hỏi..." style="width:80%">
-  <button onclick="sendMessage()">Gửi</button>
-</div>
+<h1>Chatbot AI</h1>
+
+<div id="chat"></div>
+
+<input id="msg" placeholder="Nhập câu hỏi..." style="width:300px">
+<button onclick="send()">Gửi</button>
 
 <script>
-async function sendMessage() {
-  const input = document.getElementById("input");
-  const message = input.value;
-  if (!message) return;
 
-  const messagesDiv = document.getElementById("messages");
-  messagesDiv.innerHTML += `<div class="message user">Bạn: ${message}</div>`;
+async function send(){
 
-  input.value = "";
+const msg = document.getElementById("msg").value;
 
-  const response = await fetch("/chat", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ message })
-  });
+const chat = document.getElementById("chat");
 
-  const data = await response.json();
+chat.innerHTML += "<div style='color:blue'>Bạn: "+msg+"</div>";
 
-  messagesDiv.innerHTML += `<div class="message bot">AI: ${data.reply}</div>`;
+const r = await fetch("/chat",{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify({message:msg})
+});
+
+const d = await r.json();
+
+chat.innerHTML += "<div style='color:green'>AI: "+ d.reply +"</div>";
+
 }
+
 </script>
 
 </body>
