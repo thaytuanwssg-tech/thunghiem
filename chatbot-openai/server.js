@@ -23,7 +23,7 @@ app.post("/chat", async (req, res) => {
       body: JSON.stringify({
         model: "gpt-4o-mini",
         messages: [
-          { role: "system", content: "Bạn là trợ lý AI thân thiện." },
+          { role: "system", content: "Bạn là chatbot AI hỗ trợ giáo viên." },
           { role: "user", content: userMessage }
         ]
       })
