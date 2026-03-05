@@ -1,5 +1,5 @@
 {
-  "name": "chatbot",
+  "name": "chatbot-openai",
   "version": "1.0.0",
   "type": "module",
   "main": "server.js",
